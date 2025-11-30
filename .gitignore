@@ -45,9 +45,4 @@ ENV/
 *.db
 *.sqlite3
 
-# Output directories
-layer-1-data-extraction/layer-1/run-*
-layer-2-data-processing/output/run-*
-layer-3-theme-grouping/output/run-*
-layer-4-insight-extraction/output/latest
-layer-5-email-generation/output/*
+# Output directories (temporarily included for version control)

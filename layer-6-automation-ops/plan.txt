@@ -1,0 +1,9 @@
+Layer Goal: Automate weekly workflow with governance.
+
+Key Steps:
+1. Orchestration: Use cron/Airflow to chain layers with retries; pass artifacts via shared storage (e.g., S3 bucket or local volume).
+2. Observability: Emit metrics for review volume, theme counts, model cost, and email send status to person
+3. Versioning: Store prompts, model versions, and weekly outputs in git for traceability.
+4. Security & Compliance: Document that only public data is used; mask any accidental PII before persistence.
+5. Cost Control: Cache embeddings, batch API calls, and fail fast when upstream data volume is too low.
+6. Stakeholder Loop: Send confirmation to product/ops once email is ready, capturing feedback for next iteration.

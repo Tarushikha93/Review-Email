@@ -1,0 +1,9 @@
+Layer Goal: Surface insights, quotes, and action ideas per theme.
+
+Key Steps:
+1. Insight Summaries: Feed theme context (top sentences, metrics) into GPT-4.1 or similar to extract main pain points/opportunities.
+2. Quote Selection: Pull 1–2 concise public quotes per theme; auto-truncate to <200 chars and remove PII.
+3. Action Ideation: Prompt LLM with product principles + theme summary to return 1-2 concrete next steps per theme, tagged with owner function.
+4. Scoring: Rank insights by sentiment impact × volume to highlight top priorities in the email.
+5. Validation: Human reviewer confirms quotes are public and action items are realistic before publishing.
+

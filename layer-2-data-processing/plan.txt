@@ -1,0 +1,10 @@
+Layer Goal: Clean, normalize, and persist weekly review batches.
+
+Key Steps:
+1. Cleaning: Strip HTML, normalize whitespace, detect language, discard non-English or low-confidence entries.
+2. Segmentation: Split multi-topic reviews into sentences via spaCy and keep references back to original review ids.
+3. Sentiment/Tone: Score each segment with lightweight sentiment model for later weighting.
+4. Metadata Enrichment: Tag platform, country (if inferable), star rating bucket, and submission week.
+5. Persistence: Store structured rows in SQLite or DuckDB plus a parquet export for analytics.
+6. Quality Checks: Flag empty texts, duplicates, or timestamp anomalies before moving to next layer.
+

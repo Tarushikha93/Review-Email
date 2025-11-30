@@ -1,0 +1,13 @@
+Layer Goal: Collect weekly INDmoney public reviews without PII.
+
+Key Steps:
+1. Target Platforms: Extract data from https://play.google.com/store/apps/details?id=in.indwealth&hl=en , under ratings and reviews, it will open a pop-up, extract 30 reviews from each star rating. 
+
+2. Scraper Setup: Prefer Playwright headless flows with rotating UA + retry; fall back to static HTML scraping when possible.
+3. Data Fields: Capture review text, rating, timestamp, platform, locale, and hashed pseudo-id (text+timestamp hash to dedupe) while excluding names/emails.
+4. Scheduling: Trigger weekly job; support manual rerun with date range override.
+5. Storage: Append normalized JSON Lines file per run plus raw HTML snapshot for audits.
+6. Monitoring: Log HTTP status, pagination counts, and alert on large drop-offs.
+
+Validate data extraction as  : Kalpana Rana , 1 star on September 15 2024 , 
+Worst app. It claims to be able to track all ur investments on various platforms & also bank accounts. I wasted a lot of time getting all of the accounts linked. The transactions are not updated even after days while one of the accounts got delinked twice, all by itself. Not sure how. I tried linking it again, but with no luck. Buying SIPs is another hassle on this app. The mandate just doesn't get uploaded & I have had to reach out to customer service every single time to get this sorted.

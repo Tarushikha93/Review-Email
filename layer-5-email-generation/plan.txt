@@ -1,0 +1,8 @@
+Layer Goal: Generate a weekly one-page pulse email.
+
+Key Steps:
+1. Template: Define structured JSON payload (snapshot metrics, theme cards, quotes, actions) and an email using SMTP layout with intro, theme table, and closing asks.
+2. Drafting: Prompt LLM with payload + writing guidelines (tone, length, audience) to produce polished text.
+3. Formatting: Render HTML + plaintext versions; ensure final length fits single screen and highlights stats.
+4. QA: Validate links, quote attributions (platform + week), and ensure no PII leaked.
+5. Delivery: Hand off to ESP or internal email tool; archive rendered email with metadata for historical comparison.
