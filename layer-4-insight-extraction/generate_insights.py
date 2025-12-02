@@ -33,8 +33,8 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--gemini-api-key-env",
-        default="AIzaSyDMkOAFz8VtY00I9B57qdFzPujqmh8qBR0",
-        help="Environment variable name or literal key for Gemini.",
+        default="GEMINI_API_KEY",
+        help="Environment variable name containing the Gemini API key.",
     )
     parser.add_argument(
         "--gemini-api-key",

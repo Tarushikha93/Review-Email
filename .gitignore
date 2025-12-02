@@ -45,4 +45,64 @@ ENV/
 *.db
 *.sqlite3
 
-# Output directories (temporarily included for version control)
+# Environment variables and sensitive data
+.env
+*.env
+
+# API keys and secrets
+*_key
+*_token
+*_secret
+*_password
+*_credential
+
+# Output directories
+layer-1-data-extraction/layer-1/run-*
+layer-2-data-processing/output/run-*
+layer-3-theme-grouping/output/run-*
+layer-4-insight-extraction/output/latest
+layer-5-email-generation/output/*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+.venv/
+venv/
+env/
+ENV/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Logs
+*.log
+
+# Local development
+.DS_Store
+
+# Project specific
+*.db
+*.sqlite3

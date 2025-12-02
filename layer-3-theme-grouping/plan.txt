@@ -1,0 +1,31 @@
+# Layer 3: Theme Grouping Plan
+
+## Objective
+Group similar customer feedback segments into meaningful themes to identify common patterns and insights.
+
+## Input
+- Segmented reviews from Layer 2 (segment_themes.parquet)
+- Raw review text and metadata
+
+## Process
+1. Load segmented data from Layer 2
+2. Apply clustering/grouping algorithm to identify similar segments
+3. Generate theme labels and descriptions
+4. Calculate theme statistics (segment count, average rating, etc.)
+5. Output structured theme data
+
+## Output
+- themes.json: Structured theme definitions
+- segment_themes.parquet: Updated segments with theme assignments
+- theme_summary.csv: High-level theme statistics
+
+## Dependencies
+- pandas
+- scikit-learn
+- pyarrow
+- numpy
+
+## Next Steps
+- Pass themes to Layer 4 for insight generation
+- Review and validate theme quality
+- Adjust clustering parameters as needed

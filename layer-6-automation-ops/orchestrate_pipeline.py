@@ -10,6 +10,8 @@ import subprocess
 import sys
 from pathlib import Path
 from typing import Optional
+export SMTP_USER='shikha.taru93@gmail.com'
+export SMTP_PASSWORD='jlao wswx qngq wmxs'
 
 LOGGER = logging.getLogger("layer6.orchestrator")
 
@@ -73,7 +75,7 @@ def run_layer_1(count_per_rating: int, dry_run: bool) -> tuple[bool, Optional[st
     LOGGER.info("=" * 80)
     
     cmd = [
-        "python",
+        "python3",
         "layer-1-data-extraction/run_extraction.py",
         "--count-per-rating",
         str(count_per_rating),
@@ -102,7 +104,7 @@ def run_layer_2(run_id: Optional[str], dry_run: bool) -> tuple[bool, Optional[st
     
     if run_id:
         cmd = [
-            "python",
+            "python3",
             "layer-2-data-processing/process_reviews.py",
             "--input-dir",
             "layer-1-data-extraction/layer-1",
@@ -112,7 +114,7 @@ def run_layer_2(run_id: Optional[str], dry_run: bool) -> tuple[bool, Optional[st
     else:
         # Use latest
         cmd = [
-            "python",
+            "python3",
             "layer-2-data-processing/process_reviews.py",
             "--input-dir",
             "layer-1-data-extraction/layer-1",
@@ -132,7 +134,7 @@ def run_layer_3(dry_run: bool) -> tuple[bool, Optional[str]]:
     LOGGER.info("=" * 80)
     
     cmd = [
-        "python",
+        "python3",
         "layer-3-theme-grouping/group_themes.py",
         "--segments-db",
         "layer-2-data-processing/output/latest/processed.db",
@@ -154,7 +156,7 @@ def run_layer_4(dry_run: bool) -> tuple[bool, Optional[str]]:
     LOGGER.info("=" * 80)
     
     cmd = [
-        "python",
+        "python3",
         "layer-4-insight-extraction/generate_insights.py",
     ]
     
@@ -172,7 +174,7 @@ def run_layer_5(dry_run: bool) -> tuple[bool, Optional[str]]:
     LOGGER.info("=" * 80)
     
     cmd = [
-        "python",
+        "python3",
         "layer-5-email-generation/generate_email.py",
     ]
     
