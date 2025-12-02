@@ -59,22 +59,17 @@ def load_insights(insights_path: Path) -> Dict:
 def build_email_payload(insights: Dict, snapshot_date: str) -> Dict:
     """Build structured JSON payload for email template."""
     themes = insights.get("themes", [])
-    total_segments = sum(t.get("segment_count", 0) for t in themes)
-    avg_rating = sum(t.get("avg_rating", 0) * t.get("segment_count", 0) for t in themes)
-    if total_segments > 0:
-        avg_rating /= total_segments
+    total_reviews = sum(t.get("number_of_reviews", 0) for t in themes)
 
     return {
         "snapshot_date": snapshot_date,
-        "total_segments": total_segments,
+        "total_reviews": total_reviews,
         "theme_count": len(themes),
-        "avg_rating": round(avg_rating, 2),
         "themes": [
             {
                 "rank": t.get("rank", idx + 1),
                 "label": t.get("label", "Unknown"),
-                "segment_count": t.get("segment_count", 0),
-                "avg_rating": round(t.get("avg_rating", 0), 2),
+                "number_of_reviews": t.get("number_of_reviews", 0),
                 "insight": t.get("insight", ""),
                 "top_quote": t.get("quotes", [{}])[0].get("text", "") if t.get("quotes") else "",
                 "action": t.get("actions", [{}])[0].get("description", "") if t.get("actions") else "",
@@ -93,8 +88,8 @@ def draft_email_with_llm(payload: Dict, gemini_model: str, api_key: str) -> str:
     prompt = f"""You are a product insights analyst drafting a weekly one-page pulse email for a finance app product team.
 
 Write a concise, professional email (max 500 words) that:
-- Opens with a brief snapshot summary (date, total reviews analyzed, average rating)
-- Presents top themes in a clear table format with: Rank, Theme, Segments, Avg Rating
+- Opens with a brief snapshot summary (date, total reviews analyzed)
+- Presents top themes in a clear table format with: Rank, Theme, Number of Reviews
 - Includes 1-2 representative quotes per theme (truncate to <200 chars, no PII)
 - Lists actionable next steps per theme with owner assignments
 - Closes with a brief call-to-action
@@ -123,8 +118,7 @@ def generate_fallback_email(payload: Dict) -> str:
         <tr>
             <td><strong>{theme['rank']}</strong></td>
             <td>{theme['label']}</td>
-            <td>{theme['segment_count']}</td>
-            <td>{theme['avg_rating']}★</td>
+            <td>{theme['number_of_reviews']}</td>
         </tr>"""
         
         quote_text = theme.get('top_quote', '')[:200] if theme.get('top_quote') else 'No quote available'
@@ -159,8 +153,7 @@ def generate_fallback_email(payload: Dict) -> str:
 <body>
     <div class="header">
         <h1>Weekly Review Pulse - {payload['snapshot_date']}</h1>
-        <p><strong>Total Segments:</strong> {payload['total_segments']} | 
-           <strong>Average Rating:</strong> {payload['avg_rating']}★ | 
+        <p><strong>Total Reviews:</strong> {payload['total_reviews']} | 
            <strong>Themes Identified:</strong> {payload['theme_count']}</p>
     </div>
 
@@ -170,8 +163,7 @@ def generate_fallback_email(payload: Dict) -> str:
             <tr>
                 <th>Rank</th>
                 <th>Theme</th>
-                <th>Segments</th>
-                <th>Avg Rating</th>
+                <th>Number of Reviews</th>
             </tr>
         </thead>
         <tbody>
@@ -183,7 +175,7 @@ def generate_fallback_email(payload: Dict) -> str:
     {themes_detail}
     
     <div style="margin-top: 30px; padding: 15px; background-color: #e7f3ff; border-radius: 5px;">
-        <p><strong>Next Steps:</strong> Review themes above and prioritize based on segment count and ratings. Assign owners and track progress in next week's pulse.</p>
+        <p><strong>Next Steps:</strong> Review themes above and prioritize based on number of reviews. Assign owners and track progress in next week's pulse.</p>
     </div>
 </body>
 </html>
@@ -240,9 +232,8 @@ def persist_email(
         "run_id": run_id,
         "recipient": recipient,
         "snapshot_date": payload["snapshot_date"],
-        "total_segments": payload["total_segments"],
+        "total_reviews": payload["total_reviews"],
         "theme_count": payload["theme_count"],
-        "avg_rating": payload["avg_rating"],
     }
     metadata_path.write_text(json.dumps(metadata, indent=2), encoding="utf-8")
 
@@ -283,7 +274,7 @@ def main() -> None:
         snapshot_date = insights.get("generated_at", dt.datetime.utcnow().isoformat())[:10]
 
     payload = build_email_payload(insights, snapshot_date)
-    LOGGER.info("Built email payload: %s themes, %s segments", payload["theme_count"], payload["total_segments"])
+    LOGGER.info("Built email payload: %s themes, %s reviews", payload["theme_count"], payload["total_reviews"])
 
     api_key = resolve_gemini_key(args)
     LOGGER.info("Drafting email with %s", args.gemini_model)

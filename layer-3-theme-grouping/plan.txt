@@ -1,31 +1,11 @@
-# Layer 3: Theme Grouping Plan
+Layer Goal: Cluster review segments into up to five actionable themes.
 
-## Objective
-Group similar customer feedback segments into meaningful themes to identify common patterns and insights.
-
-## Input
-- Segmented reviews from Layer 2 (segment_themes.parquet)
-- Raw review text and metadata
-
-## Process
-1. Load segmented data from Layer 2
-2. Apply clustering/grouping algorithm to identify similar segments
-3. Generate theme labels and descriptions
-4. Calculate theme statistics (segment count, average rating, etc.)
-5. Output structured theme data
-
-## Output
-- themes.json: Structured theme definitions
-- segment_themes.parquet: Updated segments with theme assignments
-- theme_summary.csv: High-level theme statistics
-
-## Dependencies
-- pandas
-- scikit-learn
-- pyarrow
-- numpy
-
-## Next Steps
-- Pass themes to Layer 4 for insight generation
-- Review and validate theme quality
-- Adjust clustering parameters as needed
+Key Steps:
+1. Embeddings: Generate vectors using OpenAI text-embedding-3-small (or local alternative) per segment.
+2. Clustering: Run HDBSCAN or agglomerative clustering with cosine distance; enforce cap by merging smallest clusters until ≤5 remain.
+2.5 : Call API of Gemini 3 for the LLM
+3. Theme Labels: Prompt LLM with top representative sentences to produce 3-4 word labels and short descriptions.
+4. Theme Metrics: Calculate share of mentions, avg sentiment, and platform mix per theme for prioritization.
+5. Traceability: Maintain mapping from theme → segments → original review ids for quotes and audits.
+ 
+------------

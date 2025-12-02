@@ -10,8 +10,6 @@ import subprocess
 import sys
 from pathlib import Path
 from typing import Optional
-export SMTP_USER='shikha.taru93@gmail.com'
-export SMTP_PASSWORD='jlao wswx qngq wmxs'
 
 LOGGER = logging.getLogger("layer6.orchestrator")
 

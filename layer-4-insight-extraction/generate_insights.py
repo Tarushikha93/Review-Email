@@ -107,8 +107,7 @@ def build_prompt(theme: Dict, quotes: List[Dict]) -> str:
         "Owners should be functions like 'Product', 'Engineering', 'Support', or 'Marketing'.\n\n"
         f"Theme Label: {theme['label']}\n"
         f"Description: {theme['description']}\n"
-        f"Segments: {theme['segment_count']}\n"
-        f"Average Rating: {theme['avg_rating']:.2f}\n"
+        f"Number of Reviews: {theme['number_of_reviews']}\n"
         f"Keywords: {', '.join(theme.get('keywords', [])) or 'n/a'}\n"
         "Quotes:\n"
     )
@@ -130,7 +129,7 @@ def call_gemini(model_name: str, prompt: str) -> Dict:
 
 
 def compute_impact(theme: Dict) -> float:
-    return float(theme["segment_count"]) * max(0.1, 5 - float(theme["avg_rating"]))
+    return float(theme.get("number_of_reviews", 0))
 
 
 def main() -> None:
@@ -173,8 +172,7 @@ def main() -> None:
             {
                 "theme_id": theme["theme_id"],
                 "label": theme["label"],
-                "segment_count": theme["segment_count"],
-                "avg_rating": theme["avg_rating"],
+                "number_of_reviews": theme["number_of_reviews"],
                 "impact_score": impact,
                 "insight": ai_summary.get("insight", ""),
                 "quotes": ai_summary.get("quotes", []),
